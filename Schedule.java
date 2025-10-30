@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -29,31 +30,34 @@ public class Schedule {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" + "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         Pattern pattern = Pattern.compile(emailRegex);
         String timeInput = "";
-        String file = "schedules.csv";
+        String filePath = "schedules.csv";
+        File file = new File(filePath);
         String line = "";
         String[] row;
-        int ID = 0;
         String formattedDate;
         String formattedTime;
         ArrayList<String> newSchedule = new ArrayList<>();
         ArrayList<String> newSchedules = new ArrayList<>();
         ArrayList<String> schedules = new ArrayList<>();
+        int ID = 1;
 
-        
-        try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            while ((line = reader.readLine()) != null) {
-                row = line.split(",");
-                schedules.addAll(Arrays.asList(row)); 
+
+        if(file.exists()){
+            try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                while ((line = reader.readLine()) != null) {
+                    if(line.startsWith("ID")){
+                        continue;
+                    }
+                    row = line.split(",");
+                    schedules.addAll(Arrays.asList(row)); 
+                }
+            } catch(IOException e){
+                System.out.println("Something went wrong");
             }
-        } catch(IOException e){
-            System.out.println("Something went wrong");
         }
 
-
-        newSchedules.clear();
         newSchedules.addAll(schedules);
         
-
         do{
             System.out.print("What is your full name?: ");
             fullName = scanner.nextLine();
@@ -108,8 +112,14 @@ public class Schedule {
 
             formattedDate = parsedFutureDate.toString();
             formattedTime = time.toString();
+
+            for(int i = 0; i < newSchedules.size(); i++){
+                if(i % 7 == 0){
+                    ID++;
+                }
+            }
         
-            newSchedule.add(Integer.toString(ID));
+            newSchedule.addFirst(Integer.toString(ID));
             newSchedule.add(fullName);
             newSchedule.add(email);
             newSchedule.add(bgInput);
@@ -117,17 +127,11 @@ public class Schedule {
             newSchedule.add(formattedDate);
             newSchedule.add(formattedTime);
 
+            for(String s: newSchedule){
+            System.out.println(s);
+        }
 
-            if(newSchedules.contains(email)){
-                System.out.println("This user already exits. Try another one.");
-            } else {
-                if(newSchedules.size() == 0){
-                newSchedules.addAll(ID, newSchedule);
-                } else {
-                newSchedules.addAll(newSchedule);
-                }
-                ID++;
-            }
+             newSchedules.addAll(newSchedule);
 
 
             fullName = "";
@@ -138,15 +142,25 @@ public class Schedule {
             formattedTime = "";
 
 
-            String[] headers = {"ID", "Full Name", " Email", "Background", "Need", "ScheduledDate", "ScheduledTime"};
-            try(FileWriter writer = new FileWriter(file, true)) {
+            String headers = "ID,Full Name,Email,Background,Need,ScheduledDate,ScheduledTime";
+
                 if(file.length() == 0){
-                writer.append(String.join(",", headers)).append("\n");
+                    try(FileWriter writer = new FileWriter(file)) {
+                    writer.append(headers + "\n");
+                    writer.append(String.join(",", newSchedule) + "\n");
+                      } catch (Exception e) {
+                        System.out.println("Something went wrong with the header");
+                    }
+                } else {
+                    try {
+                        FileWriter writer = new FileWriter(file, true);
+                    writer.append(String.join(",", newSchedule) + "\n");
+                    writer.close();
+                    } catch (Exception e) {
+                        System.out.println("Something went wrong with the content");
+                    }
                 }
-                writer.append(String.join(",", newSchedule)).append("\n");
-            } catch (IOException e) {
-                System.out.println("Something went wrong");
-            }
+                
 
         System.out.println("You have been signed up!");
         newSchedule.clear();
