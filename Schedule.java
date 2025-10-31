@@ -41,6 +41,9 @@ public class Schedule {
         ArrayList<String> schedules = new ArrayList<>();
         int ID = 1;
         String userInput = "";
+        String deleteInput = "";
+        String headers = "ID,Full Name,Email,Background,Need,ScheduledDate,ScheduledTime";
+
 
 
         if(file.exists()){
@@ -167,9 +170,6 @@ public class Schedule {
                     formattedDate = "";
                     formattedTime = "";
         
-        
-                    String headers = "ID,Full Name,Email,Background,Need,ScheduledDate,ScheduledTime";
-        
                         if(file.length() == 0){
                             try(FileWriter writer = new FileWriter(file)) {
                             writer.append(headers + "\n");
@@ -191,8 +191,47 @@ public class Schedule {
                 System.out.println("You have been signed up!");
                 newSchedule.clear();
         
-        
                 }while(fullName.isEmpty() || email.isEmpty() || bgInput.isEmpty() || needsInput.isEmpty() || formattedDate.isEmpty() || formattedTime.isEmpty());
+            } else if(userInput.equals("schedule-cli delete")){
+                if(file.length() == 0){
+                    System.out.print("There is no record to be deleted");
+                } else {
+                    System.out.print("What ID do you want to delete?: ");
+                    deleteInput = scanner.nextLine();
+                    int idToBeDeleted = Integer.parseInt(deleteInput);
+    
+                    for(int i = 0; i < newSchedules.size(); i+=7){
+                        if(i+6 < newSchedules.size()){
+                            if(Integer.parseInt(newSchedules.get(i)) == idToBeDeleted){
+                                newSchedules.remove(i + 6);
+                                newSchedules.remove(i + 5);
+                                newSchedules.remove(i + 4);
+                                newSchedules.remove(i + 3);
+                                newSchedules.remove(i + 2);
+                                newSchedules.remove(i + 1);
+                                newSchedules.remove(i);
+                            }
+                        }
+                    }
+                    System.out.println("ID " + idToBeDeleted + " successfully deleted.");
+
+                         try(FileWriter writer = new FileWriter(file)) {
+                            writer.append(headers + "\n");
+                            for(int i = 0; i < newSchedules.size(); i+=7){
+                                    newSchedule.add(newSchedules.get(i));
+                                    newSchedule.add(newSchedules.get(i + 1));
+                                    newSchedule.add(newSchedules.get(i + 2));
+                                    newSchedule.add(newSchedules.get(i + 3));
+                                    newSchedule.add(newSchedules.get(i + 4));
+                                    newSchedule.add(newSchedules.get(i + 5));
+                                    newSchedule.add(newSchedules.get(i + 6));
+                                    writer.append(String.join(",", newSchedule + "\n"));
+                                    newSchedule.clear();
+                            }
+                        } catch (Exception e) {
+                                System.out.println("Something went wrong with the header");
+                            }
+                }
             }
             if(userInput.equals("close")){
                 System.out.println("Goodbye");
