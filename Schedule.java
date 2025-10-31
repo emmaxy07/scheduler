@@ -160,9 +160,7 @@ public class Schedule {
                     System.out.println(s);
                 }
         
-                     newSchedules.addAll(newSchedule);
-        
-        
+                    newSchedules.addAll(newSchedule);
                     fullName = "";
                     email = "";
                     bgInput = "";
@@ -214,7 +212,7 @@ public class Schedule {
                         }
                     }
                     System.out.println("ID " + idToBeDeleted + " successfully deleted.");
-
+                        System.out.println(newSchedules);
                          try(FileWriter writer = new FileWriter(file)) {
                             writer.append(headers + "\n");
                             for(int i = 0; i < newSchedules.size(); i+=7){
@@ -225,7 +223,7 @@ public class Schedule {
                                     newSchedule.add(newSchedules.get(i + 4));
                                     newSchedule.add(newSchedules.get(i + 5));
                                     newSchedule.add(newSchedules.get(i + 6));
-                                    writer.append(String.join(",", newSchedule + "\n"));
+                                    writer.append(String.join(",", newSchedule) + "\n");
                                     newSchedule.clear();
                             }
                         } catch (Exception e) {
