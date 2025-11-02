@@ -141,20 +141,22 @@ public class Schedule {
         
                     formattedDate = parsedFutureDate.toString();
                     formattedTime = time.toString();
-        
-                    for(int i = 0; i < newSchedules.size(); i++){
-                        if(i % 7 == 0){
+
+                    if(newSchedules.size() == 0){
+                        ID = 1;
+                    } else {
+                            ID = Integer.parseInt(newSchedules.get(newSchedules.size() - 7));
                             ID++;
-                        }
                     }
+        
                 
                     newSchedule.addFirst(Integer.toString(ID));
-                    newSchedule.add(fullName);
-                    newSchedule.add(email);
-                    newSchedule.add(bgInput);
-                    newSchedule.add(needsInput);
-                    newSchedule.add(formattedDate);
-                    newSchedule.add(formattedTime);
+                    newSchedule.add(fullName.trim());
+                    newSchedule.add(email.trim());
+                    newSchedule.add(bgInput.trim());
+                    newSchedule.add(needsInput.trim());
+                    newSchedule.add(formattedDate.trim());
+                    newSchedule.add(formattedTime.trim());
         
                     for(String s: newSchedule){
                     System.out.println(s);
@@ -212,7 +214,6 @@ public class Schedule {
                         }
                     }
                     System.out.println("ID " + idToBeDeleted + " successfully deleted.");
-                        System.out.println(newSchedules);
                          try(FileWriter writer = new FileWriter(file)) {
                             writer.append(headers + "\n");
                             for(int i = 0; i < newSchedules.size(); i+=7){
