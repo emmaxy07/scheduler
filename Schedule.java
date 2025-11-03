@@ -212,7 +212,7 @@ public class Schedule {
                         }
                     }
                     System.out.println("ID " + idToBeDeleted + " successfully deleted.");
-                         try(FileWriter writer = new FileWriter(file)) {
+                        try(FileWriter writer = new FileWriter(file)) {
                             writer.append(headers + "\n");
                             for(int i = 0; i < newSchedules.size(); i+=7){
                                     newSchedule.add(newSchedules.get(i));
@@ -234,7 +234,7 @@ public class Schedule {
                 String updatedFormattedDate = "";
                 do {       
                     System.out.print("What ID do you want to update?: ");
-                    String idToBeUpdated = scanner.nextLine();
+                    String idToBeUpdated = scanner.nextLine().trim();
                     if(!newSchedules.contains(idToBeUpdated)){
                         System.out.println("This ID does not exist. Try again: ");
                     } else {
@@ -287,12 +287,12 @@ public class Schedule {
                         }
                     }  
         
-                     updatedFormattedDate = parsedFutureDate.toString();
-                     updatedFormattedTime = time.toString();
+                    updatedFormattedDate = parsedFutureDate.toString();
+                    updatedFormattedTime = time.toString();
 
                     for(int i = 0; i < newSchedules.size(); i+=7){
                         if(i + 6 < newSchedules.size()){
-                            if(newSchedules.get(i) == idToBeUpdated){
+                            if(newSchedules.get(i).equals(idToBeUpdated)){
                                 System.out.println(i);
                                 System.out.println(newSchedules.get(i));
                                 newSchedules.set(i + 1, fullName);
@@ -304,7 +304,27 @@ public class Schedule {
                             }
                         }
                     }
-
+                    ArrayList<String> updatedSchedulesList = new ArrayList<>();
+                    try {
+                            FileWriter writer = new FileWriter(file);
+                            writer.append(headers + "\n");
+                            for(int i = 0; i < newSchedules.size(); i+=7){
+                                if(i + 6 < newSchedules.size()){
+                                    updatedSchedulesList.add(newSchedules.get(i));
+                                    updatedSchedulesList.add(newSchedules.get(i + 1));
+                                    updatedSchedulesList.add(newSchedules.get(i + 2));
+                                    updatedSchedulesList.add(newSchedules.get(i + 3));
+                                    updatedSchedulesList.add(newSchedules.get(i + 4));
+                                    updatedSchedulesList.add(newSchedules.get(i + 5));
+                                    updatedSchedulesList.add(newSchedules.get(i + 6));
+                                    writer.append(String.join(",", updatedSchedulesList) + "\n");
+                                    updatedSchedulesList.clear();
+                                }
+                            }
+                            writer.close();
+                            } catch (Exception e) {
+                                System.out.println("Something went wrong with the content");
+                            }
                     }
                 } while (fullName.isEmpty() || email.isEmpty() || bgInput.isEmpty() || needsInput.isEmpty() || updatedFormattedDate.isEmpty() || updatedFormattedTime.isEmpty());
             }
