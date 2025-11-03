@@ -136,8 +136,7 @@ public class Schedule {
                         } else {
                             System.out.println("You selected a time outside our opening hours. Try again");
                         }
-                    }
-        
+                    }  
         
                     formattedDate = parsedFutureDate.toString();
                     formattedTime = time.toString();
@@ -148,7 +147,6 @@ public class Schedule {
                             ID = Integer.parseInt(newSchedules.get(newSchedules.size() - 7));
                             ID++;
                     }
-        
                 
                     newSchedule.addFirst(Integer.toString(ID));
                     newSchedule.add(fullName.trim());
@@ -231,6 +229,84 @@ public class Schedule {
                                 System.out.println("Something went wrong with the header");
                             }
                 }
+            } else if(userInput.equals("schedule-cli update")){
+                String updatedFormattedTime = "";
+                String updatedFormattedDate = "";
+                do {       
+                    System.out.print("What ID do you want to update?: ");
+                    String idToBeUpdated = scanner.nextLine();
+                    if(!newSchedules.contains(idToBeUpdated)){
+                        System.out.println("This ID does not exist. Try again: ");
+                    } else {
+                    System.out.print("What is your full name?: ");
+                    fullName = scanner.nextLine();
+        
+                        while(true){
+                            System.out.print("What is your email address?: ");
+                            emailInput = scanner.nextLine();
+                            if(emailInput != null && pattern.matcher(emailInput).matches()){
+                                email = emailInput;
+                                break;
+                            } else {
+                                System.out.println("Your email: " + emailInput + " , is not correct. Try again");
+                            }
+                        }
+                    
+                    System.out.print("What is your professional background?: ");
+                    bgInput = scanner.nextLine();
+        
+                    System.out.print("Tell us how we can help you today: ");
+                    needsInput = scanner.nextLine();
+        
+                    // add validation of date input
+                    while(true){
+                        System.out.print("What date do you want to pick?: ");
+                        futureDate = scanner.nextLine();
+                        parsedFutureDate = LocalDate.parse(futureDate);
+                        if(todayDate.isBefore(parsedFutureDate)){
+                            break;
+                        } else {
+                            System.out.println("You chose a date that has been passed. Try a future date.");
+                        }
+                    }
+        
+                    // add validation of time input
+                    while (true) {   
+                        System.out.print("What time do you want to pick between 8am and 5pm?: ");
+                        timeInput = scanner.nextLine();
+                        time = LocalTime.parse(timeInput);
+                        String openingHrs = "08:00:00";
+                        String closingHrs = "17:00:00";
+                        LocalTime startTime = LocalTime.parse(openingHrs);
+                        LocalTime endTime = LocalTime.parse(closingHrs);
+            
+                        if(time.isAfter(startTime) && time.isBefore(endTime)){
+                            break;
+                        } else {
+                            System.out.println("You selected a time outside our opening hours. Try again");
+                        }
+                    }  
+        
+                     updatedFormattedDate = parsedFutureDate.toString();
+                     updatedFormattedTime = time.toString();
+
+                    for(int i = 0; i < newSchedules.size(); i+=7){
+                        if(i + 6 < newSchedules.size()){
+                            if(newSchedules.get(i) == idToBeUpdated){
+                                System.out.println(i);
+                                System.out.println(newSchedules.get(i));
+                                newSchedules.set(i + 1, fullName);
+                                newSchedules.set(i + 2, email);
+                                newSchedules.set(i + 3, bgInput);
+                                newSchedules.set(i + 4, needsInput);
+                                newSchedules.set(i + 5, updatedFormattedDate);
+                                newSchedules.set(i + 6, updatedFormattedTime);
+                            }
+                        }
+                    }
+
+                    }
+                } while (fullName.isEmpty() || email.isEmpty() || bgInput.isEmpty() || needsInput.isEmpty() || updatedFormattedDate.isEmpty() || updatedFormattedTime.isEmpty());
             }
             if(userInput.equals("close")){
                 System.out.println("Goodbye");
