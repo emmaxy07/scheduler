@@ -12,6 +12,7 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class Schedule {
+    static ArrayList<String> newSchedules = new ArrayList<>();
 
     public static void main(String[] args) throws FileNotFoundException {
         Scanner scanner = new Scanner(System.in);
@@ -37,7 +38,6 @@ public class Schedule {
         String formattedDate;
         String formattedTime;
         ArrayList<String> newSchedule = new ArrayList<>();
-        ArrayList<String> newSchedules = new ArrayList<>();
         ArrayList<String> schedules = new ArrayList<>();
         int ID = 1;
         String userInput = "";
@@ -66,26 +66,7 @@ public class Schedule {
             System.out.print("What do you want to do?: ");
             userInput = scanner.nextLine();
             if(userInput.equals("schedule-cli list")){
-                    System.out.printf("%-5s | %-20s | %-25s | %-15s | %-10s | %-15s | %-10s%n",
-                "ID", "Full Name", "Email", "Background", "Need", "Date", "Time");
-                System.out.print("--------------------------------------------------------------------------------------------------------------------" + "\n");
-    
-    
-                for(int i = 0; i < newSchedules.size(); i+=7){
-                    if(i + 6 < newSchedules.size()){
-                        System.out.printf("%-5s | %-20s | %-25s | %-15s | %-10s | %-15s | %-10s%n",
-                        newSchedules.get(i),     
-                        newSchedules.get(i + 1), 
-                        newSchedules.get(i + 2), 
-                        newSchedules.get(i + 3), 
-                        newSchedules.get(i + 4), 
-                        newSchedules.get(i + 5), 
-                        newSchedules.get(i + 6)  
-                );
-                    }
-                }
-            System.out.print("--------------------------------------------------------------------------------------------------------------------" + "\n");
-    
+                listSchedules(newSchedules);
             } else if(userInput.equals("schedule-cli add")){
                 do{
                     System.out.print("What is your full name?: ");
@@ -335,5 +316,25 @@ public class Schedule {
         }
         scanner.close();
 
+    }
+
+    static void listSchedules (ArrayList<String> newSchedules){
+        System.out.printf("%-5s | %-20s | %-25s | %-15s | %-10s | %-15s | %-10s%n",
+                "ID", "Full Name", "Email", "Background", "Need", "Date", "Time");
+                System.out.print("--------------------------------------------------------------------------------------------------------------------" + "\n");
+        for(int i = 0; i < newSchedules.size(); i+=7){
+                    if(i + 6 < newSchedules.size()){
+                        System.out.printf("%-5s | %-20s | %-25s | %-15s | %-10s | %-15s | %-10s%n",
+                        newSchedules.get(i),     
+                        newSchedules.get(i + 1), 
+                        newSchedules.get(i + 2), 
+                        newSchedules.get(i + 3), 
+                        newSchedules.get(i + 4), 
+                        newSchedules.get(i + 5), 
+                        newSchedules.get(i + 6)  
+                );
+                    }
+                }
+                System.out.print("--------------------------------------------------------------------------------------------------------------------" + "\n");
     }
 }
