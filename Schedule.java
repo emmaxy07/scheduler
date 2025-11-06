@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+
+
 public class Schedule {
     static ArrayList<String> newSchedules = new ArrayList<>();
 
@@ -21,7 +23,7 @@ public class Schedule {
         LocalTime time;
         LocalDate parsedFutureDate;
         
-        System.out.println("Project Details");
+        System.out.println("Scheduler Application");
 
         String fullName = "";
         String emailInput = "";
@@ -70,7 +72,8 @@ public class Schedule {
             } else if(userInput.equals("schedule-cli add")){
                 do{
                     System.out.print("What is your full name?: ");
-                    fullName = scanner.nextLine();
+                    // fullName = scanner.nextLine();
+                    String inputName = scanner.nextLine();
         
                         while(true){
                             System.out.print("What is your email address?: ");
@@ -128,6 +131,9 @@ public class Schedule {
                             ID = Integer.parseInt(newSchedules.get(newSchedules.size() - 7));
                             ID++;
                     }
+    //  ScheduleRecord scheduleRecord = new ScheduleRecord(ID, fullName, emailInput, email, bgInput, needsInput, timeInput);
+    //  newSchedules.add(scheduleRecord);
+
                 
                     newSchedule.addFirst(Integer.toString(ID));
                     newSchedule.add(fullName.trim());
@@ -175,6 +181,7 @@ public class Schedule {
                 if(file.length() == 0){
                     System.out.print("There is no record to be deleted");
                 } else {
+                    listSchedules(newSchedules);
                     System.out.print("What ID do you want to delete?: ");
                     deleteInput = scanner.nextLine();
                     int idToBeDeleted = Integer.parseInt(deleteInput);
@@ -209,10 +216,12 @@ public class Schedule {
                         } catch (Exception e) {
                                 System.out.println("Something went wrong with the header");
                             }
+                listSchedules(newSchedules);
                 }
             } else if(userInput.equals("schedule-cli update")){
                 String updatedFormattedTime = "";
                 String updatedFormattedDate = "";
+                listSchedules(newSchedules);
                 do {       
                     System.out.print("What ID do you want to update?: ");
                     String idToBeUpdated = scanner.nextLine().trim();
@@ -307,6 +316,7 @@ public class Schedule {
                                 System.out.println("Something went wrong with the content");
                             }
                     }
+                listSchedules(newSchedules);
                 } while (fullName.isEmpty() || email.isEmpty() || bgInput.isEmpty() || needsInput.isEmpty() || updatedFormattedDate.isEmpty() || updatedFormattedTime.isEmpty());
             }
             if(userInput.equals("close")){
@@ -336,5 +346,9 @@ public class Schedule {
                     }
                 }
                 System.out.print("--------------------------------------------------------------------------------------------------------------------" + "\n");
+    }
+
+    static void addSchedules (){
+        
     }
 }
