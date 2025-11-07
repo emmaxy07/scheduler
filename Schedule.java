@@ -141,11 +141,12 @@ public class Schedule {
                     if(newScheduleRecords.size() == 0){
                         startingID = 1;
                     } else {
-                        startingID = Integer.parseInt(newScheduleRecords.get(newScheduleRecords.size() - 7));
+                        ScheduleRecord lastID = newScheduleRecords.get(newScheduleRecords.size() - 1);
+                        startingID = lastID.getID();
                         startingID++;
                     }
                 
-     ScheduleRecord scheduleRecord = new ScheduleRecord(ID, fullName, emailInput, bgInput, needsInput, futureDateInput, timeInput);
+     ScheduleRecord scheduleRecord = new ScheduleRecord(startingID, fullName, emailInput, bgInput, needsInput, futureDateInput, timeInput);
     newScheduleRecords.add(scheduleRecord);
 
                     
@@ -169,21 +170,23 @@ public class Schedule {
                     formattedDate = "";
                     formattedTime = "";
 
-                    int convertedID = String.valueOf(scheduleRecord.getID());
                     
-                        String stringedID = String.valueOf(ID);
+                        String stringedID = String.valueOf(scheduleRecord.getID());
+                        
+
                         if(file.length() == 0){
                             try(FileWriter writer = new FileWriter(file)) {
                             writer.append(headers + "\n");
-                            writer.append(String.join(",", newSchedule) + "\n");
-                            writer.append(String.valueOf(scheduleRecord.getID()).append(",").scheduleRecord.getFullName()).append(",").append(scheduleRecord.getEmailInput().append(",").scheduleRecord.getBgInput().append(",").scheduleRecord.getNeedsInput().append(",").scheduleRecord.getFutureDate().append(",").scheduleRecord.getTimeInput().append(","));
+                            // writer.append(String.join(",", newSchedule) + "\n");
+                            writer.append(stringedID).append(",").append(scheduleRecord.getFullName()).append(",").append(scheduleRecord.getEmailInput()).append(",").append(scheduleRecord.getBgInput()).append(",").append(scheduleRecord.getNeedsInput()).append(",").append(scheduleRecord.getFutureDate()).append(",").append(scheduleRecord.getTimeInput()).append("\n");
                               } catch (Exception e) {
                                 System.out.println("Something went wrong with the header");
                             }
                         } else {
                             try {
                                 FileWriter writer = new FileWriter(file, true);
-                            writer.append(String.join(",", newSchedule) + "\n");
+                            // writer.append(String.join(",", newSchedule) + "\n");
+                            writer.append(stringedID).append(",").append(scheduleRecord.getFullName()).append(",").append(scheduleRecord.getEmailInput()).append(",").append(scheduleRecord.getBgInput()).append(",").append(scheduleRecord.getNeedsInput()).append(",").append(scheduleRecord.getFutureDate()).append(",").append(scheduleRecord.getTimeInput()).append("\n");
                             writer.close();
                             } catch (Exception e) {
                                 System.out.println("Something went wrong with the content");
@@ -367,7 +370,7 @@ public class Schedule {
                 System.out.print("--------------------------------------------------------------------------------------------------------------------" + "\n");
     }
 
-    static void addSchedules (){
+    static void writeNewScheduleRecord (ScheduleRecord scheduleRecord){
         
     }
 }
