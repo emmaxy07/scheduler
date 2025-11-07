@@ -22,7 +22,7 @@ public class Schedule {
         String futureDate;
         LocalTime time;
         LocalDate parsedFutureDate;
-        
+        String futureDateInput;
         System.out.println("Scheduler Application");
 
         String fullName = "";
@@ -42,9 +42,11 @@ public class Schedule {
         ArrayList<String> newSchedule = new ArrayList<>();
         ArrayList<String> schedules = new ArrayList<>();
         int ID = 1;
+        int startingID = 1;
         String userInput = "";
         String deleteInput = "";
         String headers = "ID,Full Name,Email,Background,Need,ScheduledDate,ScheduledTime";
+        ArrayList<ScheduleRecord> newScheduleRecords = new ArrayList<>();
 
 
 
@@ -72,12 +74,13 @@ public class Schedule {
             } else if(userInput.equals("schedule-cli add")){
                 do{
                     System.out.print("What is your full name?: ");
-                    // fullName = scanner.nextLine();
-                    String inputName = scanner.nextLine();
+                    fullName = scanner.nextLine();
+                    // fullName = scanner.nextLine().trim();
         
                         while(true){
                             System.out.print("What is your email address?: ");
                             emailInput = scanner.nextLine();
+                            // emailInput = scanner.nextLine().trim();
                             if(emailInput != null && pattern.matcher(emailInput).matches()){
                                 email = emailInput;
                                 break;
@@ -97,6 +100,7 @@ public class Schedule {
                     while(true){
                         System.out.print("What date do you want to pick?: ");
                         futureDate = scanner.nextLine();
+                        futureDateInput = scanner.nextLine().trim();
                         parsedFutureDate = LocalDate.parse(futureDate);
                         if(todayDate.isBefore(parsedFutureDate)){
                             break;
@@ -131,10 +135,20 @@ public class Schedule {
                             ID = Integer.parseInt(newSchedules.get(newSchedules.size() - 7));
                             ID++;
                     }
-    //  ScheduleRecord scheduleRecord = new ScheduleRecord(ID, fullName, emailInput, email, bgInput, needsInput, timeInput);
-    //  newSchedules.add(scheduleRecord);
 
+                    
+
+                    if(newScheduleRecords.size() == 0){
+                        startingID = 1;
+                    } else {
+                        startingID = Integer.parseInt(newScheduleRecords.get(newScheduleRecords.size() - 7));
+                        startingID++;
+                    }
                 
+     ScheduleRecord scheduleRecord = new ScheduleRecord(ID, fullName, emailInput, bgInput, needsInput, futureDateInput, timeInput);
+    newScheduleRecords.add(scheduleRecord);
+
+                    
                     newSchedule.addFirst(Integer.toString(ID));
                     newSchedule.add(fullName.trim());
                     newSchedule.add(email.trim());
@@ -154,11 +168,15 @@ public class Schedule {
                     needsInput = "";
                     formattedDate = "";
                     formattedTime = "";
-        
+
+                    int convertedID = String.valueOf(scheduleRecord.getID());
+                    
+                        String stringedID = String.valueOf(ID);
                         if(file.length() == 0){
                             try(FileWriter writer = new FileWriter(file)) {
                             writer.append(headers + "\n");
                             writer.append(String.join(",", newSchedule) + "\n");
+                            writer.append(String.valueOf(scheduleRecord.getID()).append(",").scheduleRecord.getFullName()).append(",").append(scheduleRecord.getEmailInput().append(",").scheduleRecord.getBgInput().append(",").scheduleRecord.getNeedsInput().append(",").scheduleRecord.getFutureDate().append(",").scheduleRecord.getTimeInput().append(","));
                               } catch (Exception e) {
                                 System.out.println("Something went wrong with the header");
                             }
@@ -264,6 +282,7 @@ public class Schedule {
                     while (true) {   
                         System.out.print("What time do you want to pick between 8am and 5pm?: ");
                         timeInput = scanner.nextLine();
+                        // timeInput = scanner.nextLine().trim();
                         time = LocalTime.parse(timeInput);
                         String openingHrs = "08:00:00";
                         String closingHrs = "17:00:00";
