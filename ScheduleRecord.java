@@ -46,16 +46,10 @@ public class ScheduleRecord {
         Pattern pattern = Pattern.compile(emailRegex);
         if(emailInput != null && pattern.matcher(emailInput).matches()){
             this.emailInput = emailInput;
+        } else {
+            System.out.println("Email is invalid. Try again");
         }
         }
-
-        // public String getEmail() {
-        //     return email;
-        // }
-
-        // public void setEmail(String email) {
-        //     this.email = email;
-        // }
 
         public String getBgInput() {
             return bgInput;
