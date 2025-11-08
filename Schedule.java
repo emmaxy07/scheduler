@@ -151,47 +151,59 @@ public class Schedule {
                 }
                 while(fullName.isEmpty() || emailInput.isEmpty() || bgInput.isEmpty() || needsInput.isEmpty() || futureDate.isEmpty() || timeInput.isEmpty());
             } else if(userInput.equals("schedule-cli delete")){
+                int idToBeDeleted = 0;
                 if(file.length() == 0){
                     System.out.print("There is no record to be deleted");
                 } else {
                     listSchedules(newSchedules);
                     System.out.print("What ID do you want to delete?: ");
-                    deleteInput = scanner.nextLine();
-                    int idToBeDeleted = Integer.parseInt(deleteInput);
+                    deleteInput = scanner.nextLine().trim();
+                    idToBeDeleted = Integer.parseInt(deleteInput);
     
-                    for(int i = 0; i < newSchedules.size(); i+=7){
-                        if(i+6 < newSchedules.size()){
-                            if(Integer.parseInt(newSchedules.get(i)) == idToBeDeleted){
-                                newSchedules.remove(i + 6);
-                                newSchedules.remove(i + 5);
-                                newSchedules.remove(i + 4);
-                                newSchedules.remove(i + 3);
-                                newSchedules.remove(i + 2);
-                                newSchedules.remove(i + 1);
-                                newSchedules.remove(i);
+                    // for(int i = 0; i < newSchedules.size(); i+=7){
+                    //     if(i+6 < newSchedules.size()){
+                    //         if(Integer.parseInt(newSchedules.get(i)) == idToBeDeleted){
+                    //             newSchedules.remove(i + 6);
+                    //             newSchedules.remove(i + 5);
+                    //             newSchedules.remove(i + 4);
+                    //             newSchedules.remove(i + 3);
+                    //             newSchedules.remove(i + 2);
+                    //             newSchedules.remove(i + 1);
+                    //             newSchedules.remove(i);
+                    //         }
+                    //     }
+                    // }
+
+                    for(int i = 0; i < newScheduleRecords.size(); i++){
+                            if (newScheduleRecords.get(i).getID() == idToBeDeleted){
+                                newScheduleRecords.remove(newScheduleRecords.get(i));
+                            } else {
+                                break;
                             }
                         }
                     }
                     System.out.println("ID " + idToBeDeleted + " successfully deleted.");
                         try(FileWriter writer = new FileWriter(file)) {
                             writer.append(headers + "\n");
-                            for(int i = 0; i < newSchedules.size(); i+=7){
-                                    newSchedule.add(newSchedules.get(i));
-                                    newSchedule.add(newSchedules.get(i + 1));
-                                    newSchedule.add(newSchedules.get(i + 2));
-                                    newSchedule.add(newSchedules.get(i + 3));
-                                    newSchedule.add(newSchedules.get(i + 4));
-                                    newSchedule.add(newSchedules.get(i + 5));
-                                    newSchedule.add(newSchedules.get(i + 6));
-                                    writer.append(String.join(",", newSchedule) + "\n");
-                                    newSchedule.clear();
+                            // for(int i = 0; i < newSchedules.size(); i+=7){
+                            //         newSchedule.add(newSchedules.get(i));
+                            //         newSchedule.add(newSchedules.get(i + 1));
+                            //         newSchedule.add(newSchedules.get(i + 2));
+                            //         newSchedule.add(newSchedules.get(i + 3));
+                            //         newSchedule.add(newSchedules.get(i + 4));
+                            //         newSchedule.add(newSchedules.get(i + 5));
+                            //         newSchedule.add(newSchedules.get(i + 6));
+                            //         writer.append(String.join(",", newSchedule) + "\n");
+                            //         newSchedule.clear();
+                            // }
+                            for(ScheduleRecord s: newScheduleRecords){
+                                writeNewScheduleRecord(writer, s);
                             }
                         } catch (Exception e) {
                                 System.out.println("Something went wrong with the header");
                             }
                 listSchedules(newSchedules);
-                }
-            } else if(userInput.equals("schedule-cli update")){
+                } else if(userInput.equals("schedule-cli update")){
                 String updatedFormattedTime = "";
                 String updatedFormattedDate = "";
                 listSchedules(newSchedules);
@@ -292,14 +304,12 @@ public class Schedule {
                     }
                 listSchedules(newSchedules);
                 } while (fullName.isEmpty() || email.isEmpty() || bgInput.isEmpty() || needsInput.isEmpty() || updatedFormattedDate.isEmpty() || updatedFormattedTime.isEmpty());
-            }
-            if(userInput.equals("close")){
+            } if(userInput.equals("close")){
                 System.out.println("Goodbye");
                 break;
             }
+        scanner.close();  
         }
-        scanner.close();
-
     }
 
     static void listSchedules (ArrayList<String> newSchedules){
