@@ -155,54 +155,33 @@ public class Schedule {
                 if(file.length() == 0){
                     System.out.print("There is no record to be deleted");
                 } else {
-                    listSchedules(newSchedules);
                     System.out.print("What ID do you want to delete?: ");
                     deleteInput = scanner.nextLine().trim();
                     idToBeDeleted = Integer.parseInt(deleteInput);
-    
-                    // for(int i = 0; i < newSchedules.size(); i+=7){
-                    //     if(i+6 < newSchedules.size()){
-                    //         if(Integer.parseInt(newSchedules.get(i)) == idToBeDeleted){
-                    //             newSchedules.remove(i + 6);
-                    //             newSchedules.remove(i + 5);
-                    //             newSchedules.remove(i + 4);
-                    //             newSchedules.remove(i + 3);
-                    //             newSchedules.remove(i + 2);
-                    //             newSchedules.remove(i + 1);
-                    //             newSchedules.remove(i);
-                    //         }
-                    //     }
-                    // }
+                    boolean idExists = false;
+                    for(ScheduleRecord s: newScheduleRecords){
+                        int idToBeChecked = s.getID();
+                        if(idToBeDeleted == idToBeChecked){
+                            idExists = true;
+                            break;
+                        } 
+                    }
 
-                    for(int i = 0; i < newScheduleRecords.size(); i++){
+                    for(int i = newScheduleRecords.size() - 1; i >= 0; i--){
                             if (newScheduleRecords.get(i).getID() == idToBeDeleted){
                                 newScheduleRecords.remove(newScheduleRecords.get(i));
-                            } else {
-                                break;
                             }
                         }
-                    }
                     System.out.println("ID " + idToBeDeleted + " successfully deleted.");
-                        try(FileWriter writer = new FileWriter(file)) {
-                            writer.append(headers + "\n");
-                            // for(int i = 0; i < newSchedules.size(); i+=7){
-                            //         newSchedule.add(newSchedules.get(i));
-                            //         newSchedule.add(newSchedules.get(i + 1));
-                            //         newSchedule.add(newSchedules.get(i + 2));
-                            //         newSchedule.add(newSchedules.get(i + 3));
-                            //         newSchedule.add(newSchedules.get(i + 4));
-                            //         newSchedule.add(newSchedules.get(i + 5));
-                            //         newSchedule.add(newSchedules.get(i + 6));
-                            //         writer.append(String.join(",", newSchedule) + "\n");
-                            //         newSchedule.clear();
-                            // }
-                            for(ScheduleRecord s: newScheduleRecords){
-                                writeNewScheduleRecord(writer, s);
-                            }
-                        } catch (Exception e) {
-                                System.out.println("Something went wrong with the header");
-                            }
-                listSchedules(newSchedules);
+                    try(FileWriter writer = new FileWriter(file)) {
+                        writer.append(headers + "\n");
+                        for(ScheduleRecord s: newScheduleRecords){
+                            writeNewScheduleRecord(writer, s);
+                        }
+                    } catch (Exception e) {
+                            System.out.println("Something went wrong with the header");
+                        }
+                    }
                 } else if(userInput.equals("schedule-cli update")){
                 String updatedFormattedTime = "";
                 String updatedFormattedDate = "";
