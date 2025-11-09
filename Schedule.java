@@ -11,7 +11,8 @@ import java.util.Scanner;
 
 
 public class Schedule {
-    static ArrayList<String> newSchedules = new ArrayList<>();
+    static ArrayList<ScheduleRecord> newScheduleRecords = new ArrayList<>();
+
 
     public static void main(String[] args) throws FileNotFoundException {
         Scanner scanner = new Scanner(System.in);
@@ -33,7 +34,6 @@ public class Schedule {
         String userInput = "";
         String deleteInput = "";
         String headers = "ID,Full Name,Email,Background,Need,ScheduledDate,ScheduledTime";
-        ArrayList<ScheduleRecord> newScheduleRecords = new ArrayList<>();
         ScheduleRecord scheduleRecord = new ScheduleRecord(1, "", "", "", "", "", "");
 
 
@@ -51,13 +51,13 @@ public class Schedule {
             }
         }
 
-        newSchedules.addAll(schedules);
+        
 
         while(true){
             System.out.print("What do you want to do?: ");
             userInput = scanner.nextLine();
             if(userInput.equals("schedule-cli list")){
-                listSchedules(newSchedules);
+                listSchedules(newScheduleRecords);
             } else if(userInput.equals("schedule-cli add")){
                 do{
                     System.out.print("What is your full name?: ");
@@ -170,7 +170,7 @@ public class Schedule {
                         }
                     }
                 } else if(userInput.equals("schedule-cli update")){
-                
+                listSchedules(newScheduleRecords);
                 do { 
         ScheduleRecord updatedScheduleRecord = new ScheduleRecord(1, "", "", "", "", "", "");
                     System.out.print("What ID do you want to update?: ");
@@ -248,6 +248,7 @@ public class Schedule {
                             }
                     
                 } while (fullName.isEmpty() || email.isEmpty() || bgInput.isEmpty() || needsInput.isEmpty() || futureDate.isEmpty() || timeInput.isEmpty());
+                listSchedules(newScheduleRecords);
             } if(userInput.equals("close")){
                 System.out.println("Goodbye");
                 break;
@@ -256,22 +257,20 @@ public class Schedule {
         }
     }
 
-    static void listSchedules (ArrayList<String> newSchedules){
+    static void listSchedules (ArrayList<ScheduleRecord> newScheduleRecords){
         System.out.printf("%-5s | %-20s | %-25s | %-15s | %-10s | %-15s | %-10s%n",
                 "ID", "Full Name", "Email", "Background", "Need", "Date", "Time");
                 System.out.print("--------------------------------------------------------------------------------------------------------------------" + "\n");
-        for(int i = 0; i < newSchedules.size(); i+=7){
-                    if(i + 6 < newSchedules.size()){
+        for(int i = 0; i < newScheduleRecords.size(); i++){
                         System.out.printf("%-5s | %-20s | %-25s | %-15s | %-10s | %-15s | %-10s%n",
-                        newSchedules.get(i),     
-                        newSchedules.get(i + 1), 
-                        newSchedules.get(i + 2), 
-                        newSchedules.get(i + 3), 
-                        newSchedules.get(i + 4), 
-                        newSchedules.get(i + 5), 
-                        newSchedules.get(i + 6)  
+                       newScheduleRecords.get(i).getID(),
+                       newScheduleRecords.get(i).getFullName(),
+                       newScheduleRecords.get(i).getEmailInput(),
+                       newScheduleRecords.get(i).getBgInput(),
+                       newScheduleRecords.get(i).getNeedsInput(),
+                       newScheduleRecords.get(i).getFutureDate(),
+                       newScheduleRecords.get(i).getTimeInput()
                 );
-                    }
                 }
                 System.out.print("--------------------------------------------------------------------------------------------------------------------" + "\n");
     }
