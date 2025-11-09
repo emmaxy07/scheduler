@@ -170,9 +170,9 @@ public class Schedule {
                         }
                     }
                 } else if(userInput.equals("schedule-cli update")){
-        ScheduleRecord updatedScheduleRecord = new ScheduleRecord(1, "", "", "", "", "", "");
                 
-                do {       
+                do { 
+        ScheduleRecord updatedScheduleRecord = new ScheduleRecord(1, "", "", "", "", "", "");
                     System.out.print("What ID do you want to update?: ");
                     String idToBeUpdated = scanner.nextLine().trim();
                     boolean idExists = false;
