@@ -9,7 +9,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 
 
@@ -18,11 +17,6 @@ public class Schedule {
 
     public static void main(String[] args) throws FileNotFoundException {
         Scanner scanner = new Scanner(System.in);
-        LocalDate todayDate = LocalDate.now();
-        String futureDate;
-        LocalTime time;
-        LocalDate parsedFutureDate;
-        String futureDateInput;
         System.out.println("Scheduler Application");
 
         String fullName = "";
@@ -30,24 +24,19 @@ public class Schedule {
         String email = "";
         String bgInput = "";
         String needsInput = "";
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" + "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        Pattern pattern = Pattern.compile(emailRegex);
+        String futureDate = "";
         String timeInput = "";
         String filePath = "schedules.csv";
         File file = new File(filePath);
         String line = "";
         String[] row;
-        String formattedDate;
-        String formattedTime;
-        ArrayList<String> newSchedule = new ArrayList<>();
         ArrayList<String> schedules = new ArrayList<>();
-        int ID = 1;
         int startingID = 1;
         String userInput = "";
         String deleteInput = "";
         String headers = "ID,Full Name,Email,Background,Need,ScheduledDate,ScheduledTime";
         ArrayList<ScheduleRecord> newScheduleRecords = new ArrayList<>();
-
+        ScheduleRecord scheduleRecord = new ScheduleRecord(1, "", "", "", "", "", "");
 
 
         if(file.exists()){
@@ -72,7 +61,6 @@ public class Schedule {
             if(userInput.equals("schedule-cli list")){
                 listSchedules(newSchedules);
             } else if(userInput.equals("schedule-cli add")){
-     ScheduleRecord scheduleRecord = new ScheduleRecord(1, "", "", "", "", "", "");
                 do{
                     System.out.print("What is your full name?: ");
                     fullName = scanner.nextLine().trim();
@@ -146,6 +134,7 @@ public class Schedule {
                                 System.out.println("Something went wrong with the content");
                             }
                         }
+                        
         
                 System.out.println("You have been signed up!");        
                 }
@@ -183,106 +172,84 @@ public class Schedule {
                         }
                     }
                 } else if(userInput.equals("schedule-cli update")){
-                String updatedFormattedTime = "";
-                String updatedFormattedDate = "";
-                listSchedules(newSchedules);
+        ScheduleRecord updatedScheduleRecord = new ScheduleRecord(1, "", "", "", "", "", "");
+                
                 do {       
                     System.out.print("What ID do you want to update?: ");
                     String idToBeUpdated = scanner.nextLine().trim();
-                    if(!newSchedules.contains(idToBeUpdated)){
-                        System.out.println("This ID does not exist. Try again: ");
-                    } else {
+                    boolean idExists = false;
+                    for(int i = 0; i < newScheduleRecords.size(); i++){
+                        if(newScheduleRecords.get(i).getID() == Integer.parseInt(idToBeUpdated)){
+                            idExists = true;
+                            break;
+                        } 
+                    }
+                    
                     System.out.print("What is your full name?: ");
-                    fullName = scanner.nextLine();
+                    fullName = scanner.nextLine().trim();
+                    updatedScheduleRecord.setFullName(fullName);
         
                         while(true){
                             System.out.print("What is your email address?: ");
-                            emailInput = scanner.nextLine();
-                            if(emailInput != null && pattern.matcher(emailInput).matches()){
-                                email = emailInput;
-                                break;
+                            emailInput = scanner.nextLine().trim();
+                            if(emailInput.equals("")){
+                                System.out.println("Email cannot be empty");
                             } else {
-                                System.out.println("Your email: " + emailInput + " , is not correct. Try again");
+                            updatedScheduleRecord.setEmailInput(emailInput);
+                                break;
                             }
                         }
                     
                     System.out.print("What is your professional background?: ");
-                    bgInput = scanner.nextLine();
+                    bgInput = scanner.nextLine().trim();
+                    updatedScheduleRecord.setBgInput(bgInput);
         
                     System.out.print("Tell us how we can help you today: ");
-                    needsInput = scanner.nextLine();
+                    needsInput = scanner.nextLine().trim();
+                    updatedScheduleRecord.setNeedsInput(needsInput);
         
-                    // add validation of date input
                     while(true){
                         System.out.print("What date do you want to pick?: ");
-                        futureDate = scanner.nextLine();
-                        parsedFutureDate = LocalDate.parse(futureDate);
-                        if(todayDate.isBefore(parsedFutureDate)){
-                            break;
+                        futureDate = scanner.nextLine().trim();
+                        if(futureDate.equals("")){
+                            System.out.println("future date cannot be empty");
                         } else {
-                            System.out.println("You chose a date that has been passed. Try a future date.");
+                            updatedScheduleRecord.setFutureDate(futureDate);
+                            break;
                         }
                     }
         
-                    // add validation of time input
-                    while (true) {   
+                   while (true) {   
                         System.out.print("What time do you want to pick between 8am and 5pm?: ");
-                        timeInput = scanner.nextLine();
-                        // timeInput = scanner.nextLine().trim();
-                        time = LocalTime.parse(timeInput);
-                        String openingHrs = "08:00:00";
-                        String closingHrs = "17:00:00";
-                        LocalTime startTime = LocalTime.parse(openingHrs);
-                        LocalTime endTime = LocalTime.parse(closingHrs);
-            
-                        if(time.isAfter(startTime) && time.isBefore(endTime)){
-                            break;
+                        timeInput = scanner.nextLine().trim();
+                        if(timeInput.equals("")){
+                            System.out.println("time cannot be empty");
                         } else {
-                            System.out.println("You selected a time outside our opening hours. Try again");
+                            updatedScheduleRecord.setTimeInput(timeInput);
+                            break;
                         }
                     }  
-        
-                    updatedFormattedDate = parsedFutureDate.toString();
-                    updatedFormattedTime = time.toString();
 
-                    for(int i = 0; i < newSchedules.size(); i+=7){
-                        if(i + 6 < newSchedules.size()){
-                            if(newSchedules.get(i).equals(idToBeUpdated)){
-                                System.out.println(i);
-                                System.out.println(newSchedules.get(i));
-                                newSchedules.set(i + 1, fullName);
-                                newSchedules.set(i + 2, email);
-                                newSchedules.set(i + 3, bgInput);
-                                newSchedules.set(i + 4, needsInput);
-                                newSchedules.set(i + 5, updatedFormattedDate);
-                                newSchedules.set(i + 6, updatedFormattedTime);
-                            }
+                    updatedScheduleRecord.setID(Integer.parseInt(idToBeUpdated));
+                    
+                    for(int i = 0; i < newScheduleRecords.size(); i++){
+                        if(newScheduleRecords.get(i).getID() == Integer.parseInt(idToBeUpdated)){
+                            newScheduleRecords.set(i, updatedScheduleRecord);
                         }
                     }
-                    ArrayList<String> updatedSchedulesList = new ArrayList<>();
+        
                     try {
                             FileWriter writer = new FileWriter(file);
                             writer.append(headers + "\n");
-                            for(int i = 0; i < newSchedules.size(); i+=7){
-                                if(i + 6 < newSchedules.size()){
-                                    updatedSchedulesList.add(newSchedules.get(i));
-                                    updatedSchedulesList.add(newSchedules.get(i + 1));
-                                    updatedSchedulesList.add(newSchedules.get(i + 2));
-                                    updatedSchedulesList.add(newSchedules.get(i + 3));
-                                    updatedSchedulesList.add(newSchedules.get(i + 4));
-                                    updatedSchedulesList.add(newSchedules.get(i + 5));
-                                    updatedSchedulesList.add(newSchedules.get(i + 6));
-                                    writer.append(String.join(",", updatedSchedulesList) + "\n");
-                                    updatedSchedulesList.clear();
-                                }
+                            for(int i = 0; i < newScheduleRecords.size(); i++){
+                               writeNewScheduleRecord(writer, newScheduleRecords.get(i));
                             }
                             writer.close();
                             } catch (Exception e) {
                                 System.out.println("Something went wrong with the content");
                             }
-                    }
-                listSchedules(newSchedules);
-                } while (fullName.isEmpty() || email.isEmpty() || bgInput.isEmpty() || needsInput.isEmpty() || updatedFormattedDate.isEmpty() || updatedFormattedTime.isEmpty());
+                    
+                } while (fullName.isEmpty() || email.isEmpty() || bgInput.isEmpty() || needsInput.isEmpty() || futureDate.isEmpty() || timeInput.isEmpty());
             } if(userInput.equals("close")){
                 System.out.println("Goodbye");
                 break;
