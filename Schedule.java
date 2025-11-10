@@ -5,14 +5,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 
 
 public class Schedule {
     static ArrayList<ScheduleRecord> newScheduleRecords = new ArrayList<>();
-
 
     public static void main(String[] args) throws FileNotFoundException {
         Scanner scanner = new Scanner(System.in);
@@ -29,13 +27,11 @@ public class Schedule {
         File file = new File(filePath);
         String line = "";
         String[] row;
-        ArrayList<String> schedules = new ArrayList<>();
         int startingID = 1;
         String userInput = "";
         String deleteInput = "";
         String headers = "ID,Full Name,Email,Background,Need,ScheduledDate,ScheduledTime";
         ScheduleRecord scheduleRecord = new ScheduleRecord(1, "", "", "", "", "", "");
-
 
         if(file.exists()){
             try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -44,7 +40,8 @@ public class Schedule {
                         continue;
                     }
                     row = line.split(",");
-                    schedules.addAll(Arrays.asList(row)); 
+                    newScheduleRecords.add(new ScheduleRecord(Integer.parseInt(row[0]), row[1], row[2], row[3], row[4], row[5], row[6]));
+                    System.out.println(newScheduleRecords);
                 }
             } catch(IOException e){
                 System.out.println("Something went wrong");

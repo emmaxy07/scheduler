@@ -99,6 +99,16 @@ public class ScheduleRecord {
             }
         }
 
+        public void resetScheduleState(){
+            this.ID = 1;
+            this.fullName = "";
+            this.emailInput = "";
+            this.bgInput = "";
+            this.needsInput = "";
+            this.futureDate = "";
+            this.timeInput = "";
+        }
+
         @Override
         public String toString() {
             return "ScheduleRecord [ID=" + ID + ", fullName=" + fullName + ", emailInput=" + emailInput + ",  bgInput=" + bgInput + ", needsInput=" + needsInput + ", futureDate=" + futureDate + ", timeInput=" + timeInput + "]";
