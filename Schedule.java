@@ -79,22 +79,20 @@ public class Schedule {
                     while(true){
                         System.out.print("What date do you want to pick?: ");
                         futureDate = scanner.nextLine().trim();
-                        if(futureDate.equals("")){
-                            System.out.println("future date cannot be empty");
-                        } else {
-                            scheduleRecord.setFutureDate(futureDate);
+                        if(futureDate != null && !futureDate.isEmpty()){
                             break;
+                        } else {
+                            System.out.println("future date cannot be empty");
                         }
                     }
         
                     while (true) {   
                         System.out.print("What time do you want to pick between 8am and 5pm?: ");
                         timeInput = scanner.nextLine().trim();
-                        if(timeInput.equals("")){
-                            System.out.println("time cannot be empty");
-                        } else {
-                            scheduleRecord.setTimeInput(timeInput);
+                        if(timeInput != null && !timeInput.isEmpty()){
                             break;
+                        } else {
+                            System.out.println("time cannot be empty");
                         }
                     }  
 

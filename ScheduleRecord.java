@@ -10,15 +10,39 @@ public class ScheduleRecord {
         private String needsInput;
         private String futureDate;
         private String timeInput;
-
+        
         ScheduleRecord(int ID, String fullName, String emailInput, String bgInput, String needsInput, String futureDate, String timeInput){
+            String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" + "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+            Pattern pattern = Pattern.compile(emailRegex);
+            LocalDate todayDate = LocalDate.now();
+            LocalDate parsedFutureDate = LocalDate.parse(futureDate);
+            String openingHrs = "08:00:00";
+            String closingHrs = "17:00:00";
+            LocalTime startTime = LocalTime.parse(openingHrs);
+            LocalTime endTime = LocalTime.parse(closingHrs);
             this.ID = ID;
             this.fullName = fullName;
+            if(emailInput != null && pattern.matcher(emailInput).matches()){
             this.emailInput = emailInput;
+        } else {
+            System.out.println("Email is invalid. Try again");
+
+        }
             this.bgInput = bgInput;
             this.needsInput = needsInput;
-            this.futureDate = futureDate;
+            
+            if(todayDate.isBefore(parsedFutureDate)){
+                this.futureDate = futureDate.toString();
+            } else {
+                System.out.println("You chose a date that has been passed. Try a future date.");
+            }
+            
+            LocalTime time = LocalTime.parse(timeInput);
+            if(time.isAfter(startTime) && time.isBefore(endTime)){
             this.timeInput = timeInput;
+            } else {
+                System.out.println("You selected a time outside our opening hours. Try again");
+            }
         }
 
         public String getFullName(){
@@ -42,14 +66,7 @@ public class ScheduleRecord {
         }
 
         public void setEmailInput(String emailInput) {
-            String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" + "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        Pattern pattern = Pattern.compile(emailRegex);
-        if(emailInput != null && pattern.matcher(emailInput).matches()){
             this.emailInput = emailInput;
-        } else {
-            System.out.println("Email is invalid. Try again");
-            
-        }
         }
 
         public String getBgInput() {
@@ -72,14 +89,8 @@ public class ScheduleRecord {
             return futureDate;
         }
 
-        public void setFutureDate(String futureDate){
-            LocalDate todayDate = LocalDate.now();
-            LocalDate parsedFutureDate = LocalDate.parse(futureDate);
-            if(todayDate.isBefore(parsedFutureDate)){
-                this.futureDate = futureDate.toString();
-            } else {
-                System.out.println("You chose a date that has been passed. Try a future date.");
-            }
+        public void setFutureDate(String futureDate){   
+            this.futureDate = futureDate.toString();
         }
 
         public String getTimeInput() {
@@ -87,17 +98,7 @@ public class ScheduleRecord {
         }
 
         public void setTimeInput(String timeInput) {
-            LocalTime time;
-            time = LocalTime.parse(timeInput);
-            String openingHrs = "08:00:00";
-            String closingHrs = "17:00:00";
-            LocalTime startTime = LocalTime.parse(openingHrs);
-            LocalTime endTime = LocalTime.parse(closingHrs);
-            if(time.isAfter(startTime) && time.isBefore(endTime)){
             this.timeInput = timeInput;
-            } else {
-                System.out.println("You selected a time outside our opening hours. Try again");
-            }
         }
 
         public void resetScheduleState(){
