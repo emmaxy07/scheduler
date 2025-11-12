@@ -48,6 +48,7 @@ public class ScheduleRecord {
             this.emailInput = emailInput;
         } else {
             System.out.println("Email is invalid. Try again");
+            
         }
         }
 
