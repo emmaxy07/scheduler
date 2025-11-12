@@ -168,7 +168,6 @@ public class Schedule {
                 } else if(userInput.equals("schedule-cli update")){
                 listSchedules(newScheduleRecords);
                 do { 
-        ScheduleRecord updatedScheduleRecord = new ScheduleRecord(1, "", "", "", "", "", "");
                     System.out.print("What ID do you want to update?: ");
                     String idToBeUpdated = scanner.nextLine().trim();
                     boolean idExists = false;
@@ -182,53 +181,47 @@ public class Schedule {
                     if(idExists){
                         System.out.print("What is your full name?: ");
                         fullName = scanner.nextLine().trim();
-                        updatedScheduleRecord.setFullName(fullName);
             
-                            while(true){
-                                System.out.print("What is your email address?: ");
-                                emailInput = scanner.nextLine().trim();
-                                if(emailInput.equals("")){
-                                    System.out.println("Email cannot be empty");
-                                } else {
-                                updatedScheduleRecord.setEmailInput(emailInput);
-                                    break;
-                                }
+                             while(true){
+                            System.out.print("What is your email address?: ");
+                            emailInput = scanner.nextLine().trim();
+                            if(emailInput.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")){
+                                break;
+                            } else {
+                                System.out.println("Email cannot be empty");
                             }
+                        }
                         
                         System.out.print("What is your professional background?: ");
                         bgInput = scanner.nextLine().trim();
-                        updatedScheduleRecord.setBgInput(bgInput);
             
                         System.out.print("Tell us how we can help you today: ");
                         needsInput = scanner.nextLine().trim();
-                        updatedScheduleRecord.setNeedsInput(needsInput);
             
                         while(true){
-                            System.out.print("What date do you want to pick?: ");
-                            futureDate = scanner.nextLine().trim();
-                            if(futureDate.equals("")){
-                                System.out.println("future date cannot be empty");
-                            } else {
-                                updatedScheduleRecord.setFutureDate(futureDate);
-                                break;
-                            }
+                        System.out.print("What date do you want to pick?: ");
+                        futureDate = scanner.nextLine().trim();
+                        if(futureDate != null && !futureDate.isEmpty()){
+                            break;
+                        } else {
+                            System.out.println("future date cannot be empty");
                         }
+                    }
             
                        while (true) {   
-                            System.out.print("What time do you want to pick between 8am and 5pm?: ");
-                            timeInput = scanner.nextLine().trim();
-                            if(timeInput.equals("")){
-                                System.out.println("time cannot be empty");
-                            } else {
-                                updatedScheduleRecord.setTimeInput(timeInput);
-                                break;
-                            }
-                        }  
+                        System.out.print("What time do you want to pick between 8am and 5pm?: ");
+                        timeInput = scanner.nextLine().trim();
+                        if(timeInput != null && !timeInput.isEmpty()){
+                            break;
+                        } else {
+                            System.out.println("time cannot be empty");
+                        }
+                    }  
                     } else {
                         System.out.println("This ID does not exist");
                     }
 
-                    updatedScheduleRecord.setID(Integer.parseInt(idToBeUpdated));
+                    ScheduleRecord updatedScheduleRecord = new ScheduleRecord(Integer.parseInt(idToBeUpdated), fullName, emailInput, bgInput, needsInput, futureDate, timeInput);
                     
                     for(int i = 0; i < newScheduleRecords.size(); i++){
                         if(newScheduleRecords.get(i).getID() == Integer.parseInt(idToBeUpdated)){
