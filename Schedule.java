@@ -61,10 +61,10 @@ public class Schedule {
                         while(true){
                             System.out.print("What is your email address?: ");
                             emailInput = scanner.nextLine().trim();
-                            if(emailInput.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")){
+                            if(emailInput != null && emailInput.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")){
                                 break;
                             } else {
-                                System.out.println("Email cannot be empty");
+                                System.out.println("Something is wrong with the email. Try again.");
                             }
                         }
         
@@ -185,10 +185,10 @@ public class Schedule {
                              while(true){
                             System.out.print("What is your email address?: ");
                             emailInput = scanner.nextLine().trim();
-                            if(emailInput.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")){
+                            if(emailInput != null && emailInput.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")){
                                 break;
                             } else {
-                                System.out.println("Email cannot be empty");
+                                System.out.println("Something is wrong with the email. Try again.");
                             }
                         }
                         
