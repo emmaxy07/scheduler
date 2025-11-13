@@ -11,7 +11,7 @@ public class ScheduleRecord {
         private String futureDate;
         private String timeInput;
         
-        ScheduleRecord(int ID, String fullName, String emailInput, String bgInput, String needsInput, String futureDate, String timeInput){
+        ScheduleRecord(int ID, String fullName, String emailInput, String bgInput, String needsInput, String futureDate, String timeInput) throws IllegalArgumentException{
             String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" + "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
             Pattern pattern = Pattern.compile(emailRegex);
             LocalDate todayDate = LocalDate.now();
@@ -20,12 +20,13 @@ public class ScheduleRecord {
             String closingHrs = "17:00:00";
             LocalTime startTime = LocalTime.parse(openingHrs);
             LocalTime endTime = LocalTime.parse(closingHrs);
+
             this.ID = ID;
             this.fullName = fullName;
             if(emailInput != null && pattern.matcher(emailInput).matches()){
             this.emailInput = emailInput;
         } else {
-            System.out.println("Email is invalid. Try again");
+            throw new IllegalArgumentException("Email is invalid. Try again");
 
         }
             this.bgInput = bgInput;
@@ -34,14 +35,14 @@ public class ScheduleRecord {
             if(todayDate.isBefore(parsedFutureDate)){
                 this.futureDate = futureDate.toString();
             } else {
-                System.out.println("You chose a date that has been passed. Try a future date.");
+                throw new IllegalArgumentException("You chose a date that has been passed. Try a future date.");
             }
             
             LocalTime time = LocalTime.parse(timeInput);
             if(time.isAfter(startTime) && time.isBefore(endTime)){
             this.timeInput = timeInput;
             } else {
-                System.out.println("You selected a time outside our opening hours. Try again");
+               throw new IllegalArgumentException("You selected a time outside our opening hours. Try again");
             }
         }
 

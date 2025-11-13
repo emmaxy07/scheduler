@@ -182,7 +182,7 @@ public class Schedule {
                         System.out.print("What is your full name?: ");
                         fullName = scanner.nextLine().trim();
             
-                             while(true){
+                            while(true){
                             System.out.print("What is your email address?: ");
                             emailInput = scanner.nextLine().trim();
                             if(emailInput != null && emailInput.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")){
