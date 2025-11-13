@@ -188,8 +188,6 @@ public class Schedule {
                             try {        
                                 if(emailInput != null && emailInput.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")){
                                     break;
-                                } else {
-                                    System.out.println("Something is wrong with the email. Try again.");
                                 }
                             } catch (IllegalArgumentException e) {
                                 System.out.println("Email not valid");
