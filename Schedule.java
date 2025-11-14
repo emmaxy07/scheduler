@@ -218,11 +218,8 @@ public class Schedule {
                             System.out.println("time cannot be empty");
                         }
                     }  
-                    } else {
-                        System.out.println("This ID does not exist");
-                    }
 
-                    try { 
+                     try { 
                         ScheduleRecord updatedScheduleRecord = new ScheduleRecord(Integer.parseInt(idToBeUpdated), fullName, emailInput, bgInput, needsInput, futureDate, timeInput);
                         for(int i = 0; i < newScheduleRecords.size(); i++){
                         if(newScheduleRecords.get(i).getID() == Integer.parseInt(idToBeUpdated)){
@@ -244,6 +241,14 @@ public class Schedule {
                         System.out.println("Invalid data. " + e.getMessage());
                     }
                     listSchedules(newScheduleRecords);
+                    } else {
+                        System.out.println("This ID does not exist");
+                    }
+                    System.out.print("Do you want to exit? ");
+                    String answer = scanner.nextLine();
+                    if(answer.equals("Yes")){
+                        break;
+                    }
                 }
             } if(userInput.equals("close")){
                 System.out.println("Goodbye");
@@ -275,7 +280,7 @@ public class Schedule {
         try {
             writer.append(String.valueOf(scheduleRecord.getID())).append(",").append(scheduleRecord.getFullName()).append(",").append(scheduleRecord.getEmailInput()).append(",").append(scheduleRecord.getBgInput()).append(",").append(scheduleRecord.getNeedsInput()).append(",").append(scheduleRecord.getFutureDate()).append(",").append(scheduleRecord.getTimeInput()).append("\n");
         } catch (Exception e) {
-            System.out.println("Something went wrong");
+            System.out.println("Something went wrong with the file write. Try again.");
         }
     }
 }
