@@ -167,7 +167,8 @@ public class Schedule {
 
                 } else if(userInput.equals("schedule-cli update")){
                 listSchedules(newScheduleRecords);
-                do { 
+                ScheduleRecord updatedScheduleRecord = new ScheduleRecord(1, "", "", "", "", "", "");
+                while (true)  { 
                     System.out.print("What ID do you want to update?: ");
                     String idToBeUpdated = scanner.nextLine().trim();
                     boolean idExists = false;
@@ -185,13 +186,11 @@ public class Schedule {
                             while(true){
                             System.out.print("What is your email address?: ");
                             emailInput = scanner.nextLine().trim();
-                            try {        
                                 if(emailInput != null && emailInput.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")){
                                     break;
+                                } else {
+                                    System.out.println("Email invalid. Try again.");
                                 }
-                            } catch (IllegalArgumentException e) {
-                                System.out.println("Email not valid");
-                            }
                         }
                         
                         System.out.print("What is your professional background?: ");
@@ -223,7 +222,11 @@ public class Schedule {
                         System.out.println("This ID does not exist");
                     }
 
-                    ScheduleRecord updatedScheduleRecord = new ScheduleRecord(Integer.parseInt(idToBeUpdated), fullName, emailInput, bgInput, needsInput, futureDate, timeInput);
+                    try { 
+                        updatedScheduleRecord = new ScheduleRecord(Integer.parseInt(idToBeUpdated), fullName, emailInput, bgInput, needsInput, futureDate, timeInput);
+                    } catch (Exception e) {
+                        System.out.println("Invalid data. " + e.getMessage());
+                    }
                     
                     for(int i = 0; i < newScheduleRecords.size(); i++){
                         if(newScheduleRecords.get(i).getID() == Integer.parseInt(idToBeUpdated)){
@@ -240,10 +243,9 @@ public class Schedule {
                             writer.close();
                             } catch (Exception e) {
                                 System.out.println("Something went wrong with the content");
-                            }
-                    
-                } while (fullName.isEmpty() || emailInput.isEmpty() || bgInput.isEmpty() || needsInput.isEmpty() || futureDate.isEmpty() || timeInput.isEmpty());
-                listSchedules(newScheduleRecords);
+                            }     
+                            listSchedules(newScheduleRecords);
+                }
             } if(userInput.equals("close")){
                 System.out.println("Goodbye");
                 break;
