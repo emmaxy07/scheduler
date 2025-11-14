@@ -167,7 +167,7 @@ public class Schedule {
 
                 } else if(userInput.equals("schedule-cli update")){
                 listSchedules(newScheduleRecords);
-                ScheduleRecord updatedScheduleRecord = new ScheduleRecord(1, "", "", "", "", "", "");
+                 
                 while (true)  { 
                     System.out.print("What ID do you want to update?: ");
                     String idToBeUpdated = scanner.nextLine().trim();
@@ -223,12 +223,8 @@ public class Schedule {
                     }
 
                     try { 
-                        updatedScheduleRecord = new ScheduleRecord(Integer.parseInt(idToBeUpdated), fullName, emailInput, bgInput, needsInput, futureDate, timeInput);
-                    } catch (Exception e) {
-                        System.out.println("Invalid data. " + e.getMessage());
-                    }
-                    
-                    for(int i = 0; i < newScheduleRecords.size(); i++){
+                        ScheduleRecord updatedScheduleRecord = new ScheduleRecord(Integer.parseInt(idToBeUpdated), fullName, emailInput, bgInput, needsInput, futureDate, timeInput);
+                        for(int i = 0; i < newScheduleRecords.size(); i++){
                         if(newScheduleRecords.get(i).getID() == Integer.parseInt(idToBeUpdated)){
                             newScheduleRecords.set(i, updatedScheduleRecord);
                         }
@@ -243,8 +239,11 @@ public class Schedule {
                             writer.close();
                             } catch (Exception e) {
                                 System.out.println("Something went wrong with the content");
-                            }     
-                            listSchedules(newScheduleRecords);
+                            }  
+                    } catch (Exception e) {
+                        System.out.println("Invalid data. " + e.getMessage());
+                    }
+                    listSchedules(newScheduleRecords);
                 }
             } if(userInput.equals("close")){
                 System.out.println("Goodbye");
@@ -276,7 +275,6 @@ public class Schedule {
         try {
             writer.append(String.valueOf(scheduleRecord.getID())).append(",").append(scheduleRecord.getFullName()).append(",").append(scheduleRecord.getEmailInput()).append(",").append(scheduleRecord.getBgInput()).append(",").append(scheduleRecord.getNeedsInput()).append(",").append(scheduleRecord.getFutureDate()).append(",").append(scheduleRecord.getTimeInput()).append("\n");
         } catch (Exception e) {
-            // TODO: handle exception
             System.out.println("Something went wrong");
         }
     }
