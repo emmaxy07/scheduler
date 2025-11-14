@@ -13,9 +13,7 @@ public class ScheduleRecord {
         
         ScheduleRecord(int ID, String fullName, String emailInput, String bgInput, String needsInput, String futureDate, String timeInput) throws IllegalArgumentException{
             String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" + "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-            Pattern pattern = Pattern.compile(emailRegex);
             LocalDate todayDate = LocalDate.now();
-            LocalDate parsedFutureDate = LocalDate.parse(futureDate);
             String openingHrs = "08:00:00";
             String closingHrs = "17:00:00";
             LocalTime startTime = LocalTime.parse(openingHrs);
@@ -23,6 +21,7 @@ public class ScheduleRecord {
 
             this.ID = ID;
             this.fullName = fullName;
+            Pattern pattern = Pattern.compile(emailRegex);
             if(emailInput != null && pattern.matcher(emailInput).matches()){
             this.emailInput = emailInput;
         } else {
@@ -32,6 +31,7 @@ public class ScheduleRecord {
             this.bgInput = bgInput;
             this.needsInput = needsInput;
             
+            LocalDate parsedFutureDate = LocalDate.parse(futureDate);
             if(todayDate.isBefore(parsedFutureDate)){
                 this.futureDate = futureDate.toString();
             } else {

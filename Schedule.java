@@ -30,7 +30,7 @@ public class Schedule {
         String userInput = "";
         String deleteInput = "";
         String headers = "ID,Full Name,Email,Background,Need,ScheduledDate,ScheduledTime";
-        ScheduleRecord scheduleRecord = new ScheduleRecord(1, "", "", "", "", "", "");
+        // ScheduleRecord scheduleRecord = new ScheduleRecord(1, "", "", "", "", "", "");
 
         if(file.exists()){
             try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -56,7 +56,6 @@ public class Schedule {
                 do{
                     System.out.print("What is your full name?: ");
                     fullName = scanner.nextLine().trim();
-                    scheduleRecord.setFullName(fullName);
         
                         while(true){
                             System.out.print("What is your email address?: ");
@@ -70,11 +69,9 @@ public class Schedule {
         
                     System.out.print("What is your professional background?: ");
                     bgInput = scanner.nextLine().trim();
-                    scheduleRecord.setBgInput(bgInput);
         
                     System.out.print("Tell us how we can help you today: ");
                     needsInput = scanner.nextLine().trim();
-                    scheduleRecord.setNeedsInput(needsInput);
         
                     while(true){
                         System.out.print("What date do you want to pick?: ");
@@ -102,7 +99,6 @@ public class Schedule {
                         ScheduleRecord lastID = newScheduleRecords.get(newScheduleRecords.size() - 1);
                         startingID = lastID.getID();
                         startingID++;
-                        scheduleRecord.setID(startingID);
                     }             
     
                     newScheduleRecords.add(new ScheduleRecord(startingID, fullName, emailInput, bgInput, needsInput, futureDate, timeInput));          
@@ -110,15 +106,17 @@ public class Schedule {
                         if(file.length() == 0){
                             try(FileWriter writer = new FileWriter(file)) {
                             writer.append(headers + "\n");
-                                writeNewScheduleRecord(writer, scheduleRecord);
+                                for(int i = 0; i < newScheduleRecords.size(); i++){
+                               writeNewScheduleRecord(writer, newScheduleRecords.get(i));
+                            }
                               } catch (Exception e) {
                                 System.out.println("Something went wrong with the header");
                             }
                         } else {
                             try {
                                 FileWriter writer = new FileWriter(file, true);
-                                writeNewScheduleRecord(writer, scheduleRecord);
-                            writer.close();
+                               writeNewScheduleRecord(writer, newScheduleRecords.get(newScheduleRecords.size()-1));
+                                writer.close();
                             } catch (Exception e) {
                                 System.out.println("Something went wrong with the content");
                             }
